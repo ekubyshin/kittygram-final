@@ -1,9 +1,9 @@
 import base64
 import datetime as dt
 
+import webcolors
 from django.core.files.base import ContentFile
 from rest_framework import serializers
-import webcolors
 
 from .models import Achievement, AchievementCat, Cat
 
@@ -64,8 +64,10 @@ class CatSerializer(serializers.ModelSerializer):
             achievements = validated_data.pop('achievements')
             cat = Cat.objects.create(**validated_data)
             for achievement in achievements:
-                current_achievement, status = Achievement.objects.get_or_create(
-                    **achievement
+                current_achievement, status = (
+                    Achievement.objects.get_or_create(
+                        **achievement
+                    )
                 )
                 AchievementCat.objects.create(
                     achievement=current_achievement, cat=cat
@@ -83,8 +85,10 @@ class CatSerializer(serializers.ModelSerializer):
             achievements_data = validated_data.pop('achievements')
             lst = []
             for achievement in achievements_data:
-                current_achievement, status = Achievement.objects.get_or_create(
-                    **achievement
+                current_achievement, status = (
+                    Achievement.objects.get_or_create(
+                        **achievement
+                    )
                 )
                 lst.append(current_achievement)
             instance.achievements.set(lst)
