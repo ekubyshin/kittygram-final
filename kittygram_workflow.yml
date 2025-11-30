@@ -114,9 +114,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd kittygram
-            docker compose -f docker-compose.production.yml pull
-            docker compose -f docker-compose.production.yml down
-            docker compose -f docker-compose.production.yml up -d
+            sudo docker compose -f docker-compose.production.yml pull
+            sudo docker compose -f docker-compose.production.yml down
+            sudo docker compose -f docker-compose.production.yml up -d
             sudo docker system prune -af
 
   backend_tests:
