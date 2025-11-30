@@ -1,0 +1,53 @@
+volumes:
+  pg_data:
+  static:
+  media:
+
+networks:
+  kittygram_network:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - kittygram_network
+    restart: always
+
+  backend:
+    image: kubyshin/kittygram_backend:latest
+    env_file: .env
+    volumes:
+      - static:/app/collected_static
+      - media:/app/media
+    depends_on:
+      - postgres
+    networks:
+      - kittygram_network
+    restart: always
+
+  frontend:
+    image: kubyshin/kittygram_frontend:latest
+    volumes:
+      - static:/app/build
+    networks:
+      - kittygram_network
+    restart: always
+
+  gateway:
+    image: kubyshin/kittygram_gateway:latest
+    ports:
+      - "80:80"
+    volumes:
+      - static:/usr/share/nginx/html
+      - media:/media
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - kittygram_network
+    restart: always
+
