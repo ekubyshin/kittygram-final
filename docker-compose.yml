@@ -30,7 +30,7 @@ services:
   frontend:
     build: ./frontend/
     volumes:
-      - static:/app/build
+      - static:/static
     networks:
       - kittygram_network
 
@@ -39,8 +39,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - static:/usr/share/nginx/html
-      - media:/media
+      - static:/static
+      - media:/app/media
     depends_on:
       - backend
       - frontend
