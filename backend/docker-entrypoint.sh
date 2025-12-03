@@ -8,12 +8,11 @@ until nc -z "$DB_HOST" "$DB_PORT"; do
 done
 echo "PostgreSQL started"
 
-# Копирование статики в volume
+mkdir -p /app/collected_static /app/media
+
 python manage.py collectstatic --noinput
 
-# Применение миграций
 python manage.py migrate --noinput
 
-# Запуск gunicorn
 exec gunicorn --bind 0.0.0.0:8000 kittygram_backend.wsgi
 

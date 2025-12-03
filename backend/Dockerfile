@@ -17,10 +17,6 @@ RUN pip install gunicorn==20.1.0
 
 COPY . .
 
-RUN mkdir -p /app/collected_static /app/media
-
-RUN python manage.py collectstatic --noinput
-
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
